@@ -1,0 +1,121 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.dashboard__header {
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dashboard__header h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.dashboard__header p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.dashboard__body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.dashboard__sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+}
+
+.dashboard__map {
+  flex: 1;
+  position: relative;
+}
+
+.map-view {
+  width: 100%;
+  height: 100%;
+}
+
+.risk-list {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.risk-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-h);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.risk-item:hover {
+  border-color: var(--border);
+}
+
+.risk-item--selected {
+  background: var(--bg);
+  border-color: var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.risk-item__name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.risk-item__score {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.risk-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+.risk-badge--flood {
+  background: #2563eb;
+}
+
+.risk-badge--wildfire {
+  background: #ea580c;
+}
+
+.risk-badge--heat {
+  background: #dc2626;
+}
+
+.risk-badge--drought {
+  background: #ca8a04;
+}
+
+.risk-marker {
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  padding: 0;
+}
