@@ -1,6 +1,8 @@
-import type { RiskPoint } from '../types';
+import type { RiskPoint } from '@/types';
 
-export const riskPoints: RiskPoint[] = [
+// Stands in for a real REST endpoint (e.g. GET /api/risk-points).
+// The artificial delay is there so the saga's loading state is actually visible.
+const MOCK_RISK_POINTS: RiskPoint[] = [
   {
     id: 'miami',
     name: 'Miami, FL',
@@ -74,3 +76,9 @@ export const riskPoints: RiskPoint[] = [
     description: 'Inland continental climate with intensifying summer heatwaves.',
   },
 ];
+
+export function fetchRiskPoints(): Promise<RiskPoint[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(MOCK_RISK_POINTS), 600);
+  });
+}

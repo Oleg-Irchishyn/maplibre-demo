@@ -1,12 +1,22 @@
-import type { RiskPoint } from '../types';
+'use client';
 
-interface RiskListProps {
-  points: RiskPoint[];
-  selectedId: string | null;
-  onSelect: (id: string) => void;
-}
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { riskPointSelected } from '@/store/riskSlice';
 
-export function RiskList({ points, selectedId, onSelect }: RiskListProps) {
+export function RiskList() {
+  const dispatch = useAppDispatch();
+  const points = useAppSelector((state) => state.risk.points);
+  const selectedId = useAppSelector((state) => state.risk.selectedId);
+  const status = useAppSelector((state) => state.risk.status);
+
+  if (status === 'loading' || status === 'idle') {
+    return <p className="risk-list__status">Loading risk points…</p>;
+  }
+
+  if (status === 'failed') {
+    return <p className="risk-list__status">Could not load risk points.</p>;
+  }
+
   return (
     <ul className="risk-list">
       {points.map((point) => (
@@ -14,7 +24,7 @@ export function RiskList({ points, selectedId, onSelect }: RiskListProps) {
           <button
             type="button"
             className={point.id === selectedId ? 'risk-item risk-item--selected' : 'risk-item'}
-            onClick={() => onSelect(point.id)}
+            onClick={() => dispatch(riskPointSelected(point.id))}
           >
             <span className={`risk-badge risk-badge--${point.type}`}>{point.type}</span>
             <span className="risk-item__name">{point.name}</span>

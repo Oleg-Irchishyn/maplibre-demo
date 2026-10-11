@@ -1,7 +1,15 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
-import { Map as MaplibreMap, Marker, NavigationControl, Popup } from 'maplibre-gl';
+import { Map as MaplibreMap, Marker, NavigationControl, Popup, setWorkerUrl } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import type { RiskPoint, RiskType } from '../types';
+
+// Turbopack/webpack can't resolve maplibre-gl's module worker automatically,
+// so we point it at a static copy served from /public instead.
+setWorkerUrl('/maplibre-gl-worker.mjs');
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { riskPointSelected } from '@/store/riskSlice';
+import type { RiskType } from '@/types';
 
 const RISK_COLORS: Record<RiskType, string> = {
   flood: '#2563eb',
@@ -10,13 +18,11 @@ const RISK_COLORS: Record<RiskType, string> = {
   drought: '#ca8a04',
 };
 
-interface MapViewProps {
-  points: RiskPoint[];
-  selectedId: string | null;
-  onSelect: (id: string) => void;
-}
+export function MapView() {
+  const dispatch = useAppDispatch();
+  const points = useAppSelector((state) => state.risk.points);
+  const selectedId = useAppSelector((state) => state.risk.selectedId);
 
-export function MapView({ points, selectedId, onSelect }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MaplibreMap | null>(null);
   const markersRef = useRef<Map<string, Marker>>(new Map());
@@ -64,11 +70,11 @@ export function MapView({ points, selectedId, onSelect }: MapViewProps) {
         .setPopup(popup)
         .addTo(map);
 
-      el.addEventListener('click', () => onSelect(point.id));
+      el.addEventListener('click', () => dispatch(riskPointSelected(point.id)));
 
       markersRef.current.set(point.id, marker);
     }
-  }, [points, onSelect]);
+  }, [points, dispatch]);
 
   useEffect(() => {
     const map = mapRef.current;
